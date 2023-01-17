@@ -57,9 +57,11 @@
             <div class="ml-1 mt-1.5 md:w-full md:m-auto md:flex md:mb-2 gap-2 justify-center"></div>
             <div
               class="flex flex-col w-full py-2 flex-grow md:py-3 md:pl-4 relative border border-black/10 bg-white dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]">
-              <textarea tabindex="0" data-id="request-:r0:-0" rows="1" placeholder=""
+              <textarea tabindex="0" data-id="request-:r0:-0" rows="1" placeholder="Write your message here..."
+                @keypress.enter.exact.prevent="submitMessage"
                 class="m-0 w-full resize-none border-0 bg-transparent p-0 pl-2 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent md:pl-0"
                 style="max-height: 200px; height: 24px; overflow-y: hidden;"></textarea><button
+                @click.prevent="submitMessage"
                 class="absolute p-1 rounded-md text-gray-500 bottom-1.5 right-1 md:bottom-2.5 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"><svg
                   stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20"
                   class="h-4 w-4 rotate-90" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
@@ -77,3 +79,25 @@
     </main>
   </div>
 </template>
+
+<script setup lang="ts">
+const message = ref("");
+
+const messages = ref([{
+  actor: 'AI',
+  message: 'Hello, how can I help you?'
+}, {
+  actor: 'Human',
+  message: 'Please tell me a story'
+}, {
+  actor: 'AI',
+  message: 'Once upon a time...'
+}])
+
+const submitMessage = () => {
+  if (message.value === "") return;
+
+  messages.value.push({ actor: 'Human', message: message.value });
+  message.value = '';
+}
+</script>
