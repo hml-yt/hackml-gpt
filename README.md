@@ -1,18 +1,14 @@
-# Nuxt 3 Minimal Starter
+# Hacking Modern Life's ChatGPT Clone
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## Hacking Modern Life
+
+Don't forget to subscribe to the channel at https://youtube.com/@hml for digital life hacks, home automation and coding tutorials.
 
 ## Setup
 
 Make sure to install the dependencies:
 
 ```bash
-# yarn
-yarn install
-
-# npm
-npm install
-
 # pnpm
 pnpm install
 ```
@@ -22,21 +18,9 @@ pnpm install
 Start the development server on http://localhost:3000
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 ## Production
 
-Build the application for production:
-
-```bash
-npm run build
-```
-
-Locally preview production build:
-
-```bash
-npm run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+It uses Google Cloud Run, and has a Dockerfile and cloudbuild.yaml to deploy it.
