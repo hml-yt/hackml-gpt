@@ -3,7 +3,7 @@ import { LengthTransform } from "./transformers/LengthTransform";
 
 export default defineEventHandler((event) => {
   const config = useRuntimeConfig();
-  const transform = new LengthTransform(30);
+  const transform = new LengthTransform(15);
 
   let prompt =
     'The following is a conversation with an AI assistant trained by a YouTube channel called "Hacking Modern Life" or "HML" for short. ' +
