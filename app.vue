@@ -5,6 +5,17 @@
       <div class="flex-1 overflow-hidden">
         <div class="h-full overflow-y-auto">
           <div class="flex flex-col items-center text-sm h-full chat-messages">
+            <div class="gap-4 mx-auto p-5 m-5 py-1 text-gray-800">
+              <h3 class="text-lg font-medium leading-6 text-gray-300">Hacking Modern Life GPT</h3>
+              <p class="mt-2 md:max-w-2xl lg:max-w-2xl xl:max-w-3xl  text-sm text-gray-500">Hi there, I'm David from
+                "Hacking Modern Life", on
+                YouTube, check my channel out where I share digital life hacks. Enjoy
+                this clone of ChatGPT, that's actually up and working 😉 It's built on top of the GPT-3 API.
+                It also supports a few new features, like the microphone.
+                Anyway, don't forget to subscribe at <a class="underline text-indigo-300"
+                  href="https://youtube.com/@hml?sub_confirmation=1">https://youtube.com/@hml</a>, and enjoy!
+              </p>
+            </div>
             <div v-for="message in messages"
               class="w-full border-b border-black/10 dark:border-gray-900/50 text-gray-800 dark:text-gray-100 group"
               :class="{ 'dark:bg-gray-800': message.actor === 'Human', 'dark:bg-gray-700': message.actor === 'AI' }">
