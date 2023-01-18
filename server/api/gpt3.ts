@@ -1,5 +1,9 @@
-export default defineEventHandler(async (event) => {
+import https from "https";
+import { LengthTransform } from "./transformers/LengthTransform";
+
+export default defineEventHandler((event) => {
   const config = useRuntimeConfig();
+  const transform = new LengthTransform(30);
 
   let prompt =
     'The following is a conversation with an AI assistant trained by a YouTube channel called "Hacking Modern Life" or "HML" for short. ' +
@@ -18,39 +22,56 @@ export default defineEventHandler(async (event) => {
     },
   ];
 
-  const prevMessages = await readBody(event);
-  messages = messages.concat(prevMessages);
+  return new Promise((resolve, reject) => {
+    readBody(event).then((prevMessages) => {
+      messages = messages.concat(prevMessages);
 
-  // append message to prompt, taking message.actor as "actor:" followed by message.message
-  prompt +=
-    messages
-      .map((message) => `${message.actor}: ${message.message}`)
-      .join("\n") + "\nAI:";
+      // append message to prompt, taking message.actor as "actor:" followed by message.message
+      prompt +=
+        messages
+          .map((message) => `${message.actor}: ${message.message}`)
+          .join("\n") + `\nAI:`;
 
-  const req = await fetch("https://api.openai.com/v1/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${config.OPENAI_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: "text-davinci-003",
-      prompt: prompt,
-      temperature: 0.9,
-      max_tokens: 512,
-      top_p: 1.0,
-      frequency_penalty: 0,
-      presence_penalty: 0.6,
-      stop: [" Human:", " AI:"],
-    }),
+      console.log({ prompt, prevMessages });
+
+      const req = https.request(
+        {
+          hostname: "api.openai.com",
+          port: 443,
+          path: "/v1/completions",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${config.OPENAI_API_KEY}`,
+          },
+        },
+        (res) => {
+          console.log("Got response from GPT-3");
+          event.node.res.setHeader("Content-Type", "text/event-stream");
+          resolve(res.pipe(transform));
+        }
+      );
+
+      const body = JSON.stringify({
+        model: "text-davinci-003",
+        prompt: prompt,
+        temperature: 0.9,
+        max_tokens: 512,
+        top_p: 1.0,
+        frequency_penalty: 0,
+        presence_penalty: 0.6,
+        stop: [" Human:", " AI:"],
+        stream: true,
+      });
+
+      req.on("error", (e) => {
+        console.error(e);
+        reject("problem with request:" + e.message);
+      });
+
+      req.write(body);
+
+      req.end();
+    });
   });
-
-  const res = await req.json();
-  console.log(res);
-
-  const result = res.choices[0];
-  return {
-    message: result.text,
-    finish_reason: result.finish_reason,
-  };
 });
