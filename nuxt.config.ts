@@ -6,7 +6,7 @@ export default defineNuxtConfig({
       viewport: "initial-scale=1.0, interactive-widget=resizes-content",
     },
   },
-  modules: ["@nuxtjs/tailwindcss", "nuxt-icon"],
+  modules: ["@nuxtjs/tailwindcss", "nuxt-icon", "@vueuse/nuxt"],
   runtimeConfig: {
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   },

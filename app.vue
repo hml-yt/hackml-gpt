@@ -63,6 +63,11 @@
               :class="{ 'text-gray-800': loading }" placeholder="Write your message here..."
               class="m-0 w-full resize-none border-0 bg-transparent p-0 pl-2 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent md:pl-0"
               style="max-height: 200px; overflow-y: auto;" :style="{ height: (numOfLines * 24) + 'px' }"></textarea>
+            <button @click.prevent="talking = !talking"
+              class="absolute top-2 p-1 rounded-md text-gray-500 right-1 md:bottom-2.5 md:right-9 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent">
+              <Icon v-if="talking" name="uil:microphone" class="animate-pulse text-red-500" />
+              <Icon v-else name="uil:microphone" />
+            </button>
             <button @click.prevent="submit()" :disabled="loading"
               class="absolute p-1 rounded-md text-gray-500 bottom-1.5 right-1 md:bottom-2.5 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"><svg
                 stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" class="h-4 w-4 rotate-90"
@@ -90,7 +95,34 @@ const messages = ref([{
 
 const message = ref("");
 const loading = ref(false);
+const talking = ref(false);
 const messageInput = ref<HTMLInputElement | null>(null)
+
+const lastMessage = computed(() => {
+  return messages.value[messages.value.length - 1].message;
+});
+
+const speech = useSpeechRecognition();
+const tts = useSpeechSynthesis(lastMessage, {
+});
+
+if (speech.isSupported.value) {
+  watch(speech.result, () => {
+    message.value = speech.result.value;
+  })
+
+  watch(speech.isFinal, (final) => {
+    if (final == true) submit();
+  })
+
+  watch(talking, (talking) => {
+    if (talking === true) {
+      speech.start();
+    } else {
+      speech.stop();
+    }
+  });
+}
 
 const addMessage = (actor: "AI" | "Human", message: string, loading: boolean = true) => {
   const length = messages.value.push({ actor, message, loading });
@@ -130,6 +162,9 @@ const sendRequest = async () => {
     if (result?.done) {
       loading.value = false;
       newMessage.loading = false;
+      if (talking.value === true) {
+        tts.speak();
+      }
       return;
     }
 

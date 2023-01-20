@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.9",
+    "@vueuse/nuxt": "^9.11.0",
     "nuxt-icon": "^0.2.5",
     "showdown-highlight": "^3.1.0",
     "tailwind-highlightjs": "^2.0.1",
