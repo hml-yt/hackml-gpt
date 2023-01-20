@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
     model: "stability-ai/stable-diffusion", // The model name
     input: {
       prompt: prompt,
-      widht: 512,
+      width: 512,
       height: 512,
     }, // The model specific input
     token, // You need a token from replicate.com
