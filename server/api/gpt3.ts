@@ -9,7 +9,12 @@ export default defineEventHandler((event) => {
     'The following is a conversation with an AI assistant trained by a YouTube channel called "Hacking Modern Life" or "HML" for short. ' +
     "The assistant is helpful, creative, clever, and very friendly. The assistant always goes into details. " +
     "The assistant provided very detailed explanations for his answers. Be very verbose. The assistant marks code with markdown. " +
-    "The assistant always provides code examples when it can.\n\n";
+    "The assistant always provides code examples when it can.\n\n" +
+    "The following are additional commands the assistant can run:\n" +
+    "When asked to generate an image, generate an image generation prompt, congratulate the human and finish the response " +
+    "and write !drawImage(\"PROMPT\") on a separate line. Don't output the image. Don't ask to write a prompt.\n" +
+    'When asked to read a page at URL, output !readPage("URL").\n' +
+    "Use the commands only when asked.\n\n";
 
   let messages = [
     {
@@ -29,7 +34,13 @@ export default defineEventHandler((event) => {
       // append message to prompt, taking message.actor as "actor:" followed by message.message
       prompt +=
         messages
-          .map((message) => `${message.actor}: ${message.message}`)
+          .map((message) => {
+            if (message.actor === "Human" || message.actor === "AI") {
+              return `${message.actor}: ${message.message}`;
+            } else if (message.actor === "Picture") {
+              return `!drawImage("${message.message}")`;
+            }
+          })
           .join("\n") + `\nAI:`;
 
       console.log({ prompt, prevMessages });

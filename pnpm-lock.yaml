@@ -6,6 +6,7 @@ specifiers:
   '@vueuse/nuxt': ^9.11.0
   nuxt: ^3.0.0
   nuxt-icon: ^0.2.5
+  replicate-api: ^0.1.5
   showdown-highlight: ^3.1.0
   tailwind-highlightjs: ^2.0.1
   vue-showdown: ^4.0.0
@@ -14,6 +15,7 @@ dependencies:
   '@tailwindcss/typography': 0.5.9
   '@vueuse/nuxt': 9.11.0_nuxt@3.0.0
   nuxt-icon: 0.2.5
+  replicate-api: 0.1.5
   showdown-highlight: 3.1.0
   tailwind-highlightjs: 2.0.1
   vue-showdown: 4.0.0
@@ -4288,6 +4290,11 @@ packages:
       glob: 7.2.3
       yargs: 17.6.2
     dev: true
+
+  /replicate-api/0.1.5:
+    resolution: {integrity: sha512-RixINt5inRrtEYe7AxBEUKgzrXHzbm1zJZLOgnAnZXHQIk0uO6HSucpPwbd9TLyLoOtV4KZCLMy9x9fufWd2yQ==}
+    engines: {node: '>=16.0.0'}
+    dev: false
 
   /require-directory/2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}

@@ -18,12 +18,16 @@
             </div>
             <div v-for="message in messages"
               class="w-full border-b border-black/10 dark:border-gray-900/50 text-gray-800 dark:text-gray-100 group"
-              :class="{ 'dark:bg-gray-800': message.actor === 'Human', 'dark:bg-gray-700': message.actor === 'AI' }">
+              :class="{ 'dark:bg-gray-800': message.actor === 'Human', 'dark:bg-gray-700': message.actor === 'AI', 'bg-gray-500': message.actor === 'Picture' }">
               <div
                 class="text-base gap-4 md:gap-6 m-auto md:max-w-2xl lg:max-w-2xl xl:max-w-3xl p-4 md:py-6 flex lg:px-0">
                 <div class="w-[30px] flex flex-col relative items-end">
                   <div v-if="message.actor === 'Human'" class="relative flex">
                     <Icon name="uil:user" size="large" class="bg-indigo-700" />
+                  </div>
+
+                  <div v-else-if="message.actor === 'Picture'">
+                    <Icon name="uil:picture" size="large" class="bg-fuchsia-700" />
                   </div>
 
                   <div v-else
@@ -40,8 +44,9 @@
                   <div class="flex flex-grow flex-col gap-3">
                     <div
                       class="min-h-[20px] flex flex-col items-start gap-4 whitespace-pre-wrap prose prose-gray dark:prose-invert prose-p:m-0 prose-pre:p-0 prose-pre:m-0 prose-li:my-0 prose-li:leading-none prose-ol:my-0">
-                      <VueShowdown :markdown="addFullBlock(message.message, message.loading)"
-                        :extensions="['highlight']" />
+                      <VueShowdown v-if="message.actor === 'AI' || message.actor === 'Human'"
+                        :markdown="addFullBlock(message.message, message.loading)" :extensions="['highlight']" />
+                      <SdPicture v-if="message.actor === 'Picture'" :prompt="message.message"></SdPicture>
                     </div>
                   </div>
                 </div>
@@ -102,26 +107,10 @@ const lastMessage = computed(() => {
   return messages.value[messages.value.length - 1].message;
 });
 
-const speech = useSpeechRecognition();
-const tts = useSpeechSynthesis(lastMessage, {
-});
-
-if (speech.isSupported.value) {
-  watch(speech.result, () => {
-    message.value = speech.result.value;
-  })
-
-  watch(speech.isFinal, (final) => {
-    if (final == true) submit();
-  })
-
-  watch(talking, (talking) => {
-    if (talking === true) {
-      speech.start();
-    } else {
-      speech.stop();
-    }
-  });
+const addSpecialMessage = (actor: 'Picture', message: string) => {
+  console.log({ message });
+  messages.value.push({ actor, message, loading: false });
+  scrollToEnd();
 }
 
 const addMessage = (actor: "AI" | "Human", message: string, loading: boolean = true) => {
@@ -162,9 +151,12 @@ const sendRequest = async () => {
     if (result?.done) {
       loading.value = false;
       newMessage.loading = false;
-      if (talking.value === true) {
-        tts.speak();
-      }
+
+      newMessage.message.replace(/\!drawImage\(\"(.*)\"\)/, (match, imagePrompt) => {
+        console.log(imagePrompt);
+        addSpecialMessage('Picture', imagePrompt);
+        newMessage.message = newMessage.message.replace(match, '');
+      });
       return;
     }
 
