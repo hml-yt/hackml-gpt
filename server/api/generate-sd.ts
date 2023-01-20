@@ -19,6 +19,7 @@ export default defineEventHandler(async (event) => {
       prompt: prompt,
       width: 512,
       height: 512,
+      scheduler: "K_EULER",
     }, // The model specific input
     token, // You need a token from replicate.com
   }).then(async (predict) => {
