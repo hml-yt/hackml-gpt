@@ -14,9 +14,9 @@ export default defineEventHandler(async (event) => {
   const prompt = getQuery(event).prompt;
 
   predict({
-    model: "stability-ai/stable-diffusion", // The model name
+    model: "prompthero/openjourney", // The model name
     input: {
-      prompt: prompt,
+      prompt: `mdjrny-v4 style ${prompt}`,
       width: 512,
       height: 512,
       scheduler: "K_EULER",
