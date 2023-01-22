@@ -16,7 +16,7 @@
                   href="https://youtube.com/@hml?sub_confirmation=1">https://youtube.com/@hml</a>, and enjoy!
               </p>
             </div>
-            <div v-for="message in messages"
+            <div v-for="(message, index) in messages"
               class="w-full border-b border-black/10 dark:border-gray-900/50 text-gray-800 dark:text-gray-100 group"
               :class="{ 'dark:bg-gray-800': message.actor === 'Human', 'dark:bg-gray-700': message.actor === 'AI', 'bg-gray-500': message.actor === 'Picture' }">
               <div
@@ -48,6 +48,13 @@
                         :markdown="addFullBlock(message.message, message.loading)" :extensions="['highlight']" />
                       <SdPicture v-if="message.actor === 'Picture'" :prompt="message.message"></SdPicture>
                     </div>
+                  </div>
+                  <div
+                    class="text-gray-400 flex self-end lg:self-center justify-center gap-4 lg:gap-1 lg:absolute lg:top-0 lg:translate-x-full lg:right-0 lg:mt-0 lg:pl-2 visible">
+                    <button @click="copyToClipboard(index)" :disabled="message.loading"
+                      class="p-1 pt-0 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400">
+                      <Icon :name="(copiedIndex === index ? 'uil:check' : 'uil:clipboard')" />
+                    </button>
                   </div>
                 </div>
               </div>
@@ -96,6 +103,9 @@ const messages = ref([{
 const message = ref("");
 const loading = ref(false);
 const messageInput = ref<HTMLInputElement | null>(null)
+
+const clipboard = useClipboard();
+const copiedIndex = ref(-1);
 
 const lastMessage = computed(() => {
   return messages.value[messages.value.length - 1].message;
@@ -165,6 +175,14 @@ const sendRequest = async () => {
     });
   }
 }
+
+const copyToClipboard = async (index: number) => {
+  await clipboard.copy(messages.value[index].message);
+
+  if (clipboard.copied.value) {
+    copiedIndex.value = index;
+  }
+};
 
 const submit = async () => {
   const newMessage = message.value;
