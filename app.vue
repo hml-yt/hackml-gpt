@@ -50,7 +50,7 @@
                     </div>
                   </div>
                   <div
-                    class="text-gray-400 flex self-end lg:self-center justify-center gap-4 lg:gap-1 lg:absolute lg:top-0 lg:translate-x-full lg:right-0 lg:mt-0 lg:pl-2 visible">
+                    class="text-gray-400 flex self-end lg:self-center justify-center gap-4 lg:gap-1 lg:absolute lg:top-0 lg:translate-x-full lg:right-0 lg:mt-0 lg:pl-2 md:invisible md:group-hover:visible">
                     <button @click="copyToClipboard(index)" :disabled="message.loading"
                       class="p-1 pt-0 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400">
                       <Icon :name="(copiedIndex === index ? 'uil:check' : 'uil:clipboard')" />
