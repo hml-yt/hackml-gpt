@@ -1,12 +1,17 @@
 <template>
   <div class="dark">
+    <SignUp v-if="!user" />
     <main
       class="absolute inset-0 transition-width flex flex-col overflow-hidden items-stretch flex-1 dark:bg-gray-800 pb-20 md:pb-32">
       <div class="flex-1 overflow-hidden">
         <div class="h-full overflow-y-auto">
           <div class="flex flex-col items-center text-sm h-full chat-messages">
             <div class="gap-4 mx-auto p-5 m-5 py-1 text-gray-800">
-              <h3 class="text-lg font-medium leading-6 text-gray-300">Hacking Modern Life GPT</h3>
+              <div class="flex flex-row">
+                <h3 class="text-lg font-medium leading-6 text-gray-300 flex grow">Hacking Modern Life GPT</h3>
+                <div class="flex bg-indigo-700 rounded text-white text-center p-2" v-if="user"><button
+                    @click="signOut">Logout</button></div>
+              </div>
               <p class="mt-2 md:max-w-2xl lg:max-w-2xl xl:max-w-3xl  text-sm text-gray-500">Hi there, I'm David from
                 "Hacking Modern Life", on
                 YouTube, check my channel out where I share digital life hacks. Enjoy
@@ -94,6 +99,10 @@
 </template>
 
 <script setup lang="ts">
+const user = useSupabaseUser();
+const auth = useSupabaseAuthClient()
+const supabase = useSupabaseClient();
+
 const messages = ref([{
   actor: 'AI',
   message: 'Hello! How can I help you?',
@@ -110,6 +119,14 @@ const copiedIndex = ref(-1);
 const lastMessage = computed(() => {
   return messages.value[messages.value.length - 1].message;
 });
+
+const signOut = async () => {
+  const { error } = await supabase.auth.signOut();
+  if (error) console.error(error);
+  useCookie('sb-access-token').value = null;
+  useCookie('sb-refresh-token').value = null;
+  user.value = null;
+};
 
 const addSpecialMessage = (actor: 'Picture', message: string) => {
   console.log({ message });

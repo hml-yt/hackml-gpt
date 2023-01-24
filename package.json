@@ -8,13 +8,20 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@nuxtjs/supabase": "^0.3.0",
     "@nuxtjs/tailwindcss": "^6.2.0",
     "nuxt": "^3.0.0"
   },
   "dependencies": {
+    "@formkit/icons": "1.0.0-beta.14",
+    "@formkit/nuxt": "1.0.0-beta.14",
+    "@formkit/themes": "1.0.0-beta.14",
+    "@headlessui/vue": "^1.7.7",
+    "@heroicons/vue": "^2.0.13",
     "@tailwindcss/typography": "^0.5.9",
     "@vueuse/nuxt": "^9.11.0",
     "nuxt-icon": "^0.2.5",
+    "outline": "link:@heroicons/vue/24/outline",
     "replicate-api": "^0.1.5",
     "showdown-highlight": "^3.1.0",
     "tailwind-highlightjs": "^2.0.1",
