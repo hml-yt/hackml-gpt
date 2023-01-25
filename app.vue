@@ -100,10 +100,11 @@
 
 <script setup lang="ts">
 import type { Database } from '~/types/database.types'
+import { v4 as uuidv4 } from 'uuid';
 
 const user = useSupabaseUser();
 const supabase = useSupabaseClient<Database>();
-const chatId = ref(crypto.randomUUID());
+const chatId = ref(uuidv4());
 
 const messages = ref([{
   actor: 'AI',
