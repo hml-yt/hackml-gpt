@@ -99,9 +99,11 @@
 </template>
 
 <script setup lang="ts">
+import type { Database } from '~/types/database.types'
+
 const user = useSupabaseUser();
-const auth = useSupabaseAuthClient()
-const supabase = useSupabaseClient();
+const supabase = useSupabaseClient<Database>();
+const chatId = ref(crypto.randomUUID());
 
 const messages = ref([{
   actor: 'AI',
@@ -128,9 +130,21 @@ const signOut = async () => {
   user.value = null;
 };
 
+const storeMessage = async (actor: string, message: string) => {
+  console.log('Storing message in database', { chatId: chatId.value, user: user.value?.id, actor, message });
+
+  if (chatId.value && user.value?.id) {
+    const { error } = await supabase.from('messages').insert([{ 'user_id': user.value?.id, 'chat_id': chatId.value, actor, message }]);
+    console.log({ error });
+  } else {
+    console.error('No chat id or user id', { chatId: chatId.value, user: user.value?.id });
+  }
+};
+
 const addSpecialMessage = (actor: 'Picture', message: string) => {
   console.log({ message });
   messages.value.push({ actor, message, loading: false });
+  storeMessage(actor, message);
   scrollToEnd();
 }
 
@@ -172,6 +186,7 @@ const sendRequest = async () => {
     if (result?.done) {
       loading.value = false;
       newMessage.loading = false;
+      storeMessage('AI', newMessage.message);
 
       newMessage.message.replace(/\!drawImage\(\"(.*)\"\)/, (match, imagePrompt) => {
         console.log(imagePrompt);
@@ -204,6 +219,7 @@ const copyToClipboard = async (index: number) => {
 const submit = async () => {
   const newMessage = message.value;
   addMessage("Human", newMessage, false);
+  storeMessage('Human', newMessage);
   await sendRequest();
   message.value = "";
   messageInput.value?.focus();
