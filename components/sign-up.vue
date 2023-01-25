@@ -79,7 +79,8 @@
                                                 </div>
 
                                                 <div class="mt-6">
-                                                    <FormKit type="form" @submit="signUp" submit-label="Sign In">
+                                                    <FormKit type="form" @submit="signUp"
+                                                        submit-label="Sign In with Magic Link">
                                                         <FormKitSchema :schema="[{
                                                             $formkit: 'email', name: 'email', placeholder: 'E-Mail', validation: 'required|email'
                                                         }]" />
