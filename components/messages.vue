@@ -129,17 +129,35 @@ const storeMessage = async (actor: string, message: string, index: number) => {
 const addSpecialMessage = (actor: 'Picture', message: string) => {
     console.log({ message });
     messages.value.push({ actor, message, status: '' });
-    // storeMessage(actor, message);
     scrollToEnd();
 }
 
-const addMessage = (actor: "AI" | "Human", message: string, loading: boolean = true) => {
+const addMessage = (actor: "AI" | "Human", message: string, loading: boolean = true, immediate: boolean = false) => {
     const status = (loading ? 'loading' : 'done')
     const length = messages.value.push({ actor, message, status });
-    scrollToEnd();
-    return messages.value[length - 1];
-};
 
+    const finishMessage = () => {
+        const newMessage = messages.value[length - 1];
+
+        storeMessage(actor, newMessage.message.trim(), length - 1);
+        newMessage.message.replace(/\!drawImage\(\"(.*)\"\)/, (match: any, imagePrompt: string) => {
+            console.log(imagePrompt);
+            addSpecialMessage('Picture', imagePrompt);
+            newMessage.message = newMessage.message.replace(match, '');
+        });
+        scrollToEnd();
+        newMessage.status = 'done';
+    }
+
+    if (immediate) {
+        finishMessage();
+    }
+
+    return {
+        newMessage: messages.value[length - 1],
+        finishMessage
+    }
+}
 
 const updateMessage = async (index: number, event: FocusEvent | KeyboardEvent) => {
     const target: HTMLTextAreaElement = event.target as HTMLTextAreaElement;

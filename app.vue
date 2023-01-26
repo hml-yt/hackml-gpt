@@ -18,7 +18,7 @@ const messages = ref<typeof Messages | null>(null);
 
 const sendRequest = async () => {
   loading.value = true;
-  const newMessage = messages.value?.addMessage("AI", '');
+  const { newMessage, finishMessage } = messages.value?.addMessage("AI", '');
 
   const res = await fetch(`/api/gpt3`, {
     body: messages.value?.getJson(),
@@ -33,14 +33,7 @@ const sendRequest = async () => {
 
     if (result?.done) {
       loading.value = false;
-      newMessage.status = 'done';
-      messages.value?.storeMessage('AI', newMessage.message);
-
-      newMessage.message.replace(/\!drawImage\(\"(.*)\"\)/, (match: any, imagePrompt: string) => {
-        console.log(imagePrompt);
-        messages.value?.addSpecialMessage('Picture', imagePrompt);
-        newMessage.message = newMessage.message.replace(match, '');
-      });
+      finishMessage();
       return;
     }
 
@@ -57,8 +50,7 @@ const sendRequest = async () => {
 }
 
 const submit = async (newMessage: string) => {
-  messages.value?.addMessage("Human", newMessage, false);
-  messages.value?.storeMessage('Human', newMessage);
+  messages.value?.addMessage("Human", newMessage, false, true);
   await sendRequest();
   messageInput?.value?.reset();
 };
