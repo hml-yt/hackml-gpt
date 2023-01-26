@@ -45,20 +45,38 @@
                     </svg>
                   </div>
                 </div>
-                <div class="relative flex w-[calc(100%-50px)] md:flex-col lg:w-[calc(100%-115px)]">
+                <div class="relative flex w-[calc(100%-50px)] md:flex-col lg:w-[calc(100%-115px)]"
+                  v-if="message.status !== 'editing'">
                   <div class="flex flex-grow flex-col gap-3">
                     <div
                       class="min-h-[20px] flex flex-col items-start gap-4 whitespace-pre-wrap prose prose-gray dark:prose-invert prose-p:m-0 prose-pre:p-0 prose-pre:m-0 prose-li:my-0 prose-li:leading-none prose-ol:my-0">
                       <VueShowdown v-if="message.actor === 'AI' || message.actor === 'Human'"
-                        :markdown="addFullBlock(message.message, message.loading)" :extensions="['highlight']" />
+                        :markdown="addFullBlock(message.message, message.status === 'loading')"
+                        :extensions="['highlight']" />
                       <SdPicture v-if="message.actor === 'Picture'" :prompt="message.message"></SdPicture>
                     </div>
                   </div>
                   <div
                     class="text-gray-400 flex self-end lg:self-center justify-center gap-4 lg:gap-1 lg:absolute lg:top-0 lg:translate-x-full lg:right-0 lg:mt-0 lg:pl-2 md:invisible md:group-hover:visible">
-                    <button @click="copyToClipboard(index)" :disabled="message.loading"
+                    <button @click="editMessage(index)" :disabled="message.status === 'loading'"
+                      class="p-1 pt-0 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400">
+                      <Icon name="uil:edit" />
+                    </button>
+                    <button @click="copyToClipboard(index)" :disabled="message.status === 'loading'"
                       class="p-1 pt-0 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400">
                       <Icon :name="(copiedIndex === index ? 'uil:check' : 'uil:clipboard')" />
+                    </button>
+                  </div>
+                </div>
+                <div class="relative flex w-[calc(100%-50px)] md:flex-col lg:w-[calc(100%-115px)]" v-else>
+                  <textarea autofocus
+                    class="bg-transparent w-full border-dashed border-2 border-gray-700 dark:border-gray-300 rounded-md p-2"
+                    @blur="updateMessage(index, $event)">{{ message.message }}</textarea>
+                  <div
+                    class="text-gray-400 flex self-end lg:self-center justify-center gap-4 lg:gap-1 lg:absolute lg:top-0 lg:translate-x-full lg:right-0 lg:mt-0 lg:pl-2 md:invisible md:group-hover:visible">
+                    <button @click="cancelEditMessage(index)" :disabled="message.status === 'loading'"
+                      class="p-1 pt-0 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400">
+                      <Icon name="uil:backspace" />
                     </button>
                   </div>
                 </div>
@@ -109,7 +127,7 @@ const chatId = ref(uuidv4());
 const messages = ref([{
   actor: 'AI',
   message: 'Hello! How can I help you?',
-  loading: false
+  status: '',
 }]);
 
 const message = ref("");
@@ -144,13 +162,14 @@ const storeMessage = async (actor: string, message: string) => {
 
 const addSpecialMessage = (actor: 'Picture', message: string) => {
   console.log({ message });
-  messages.value.push({ actor, message, loading: false });
+  messages.value.push({ actor, message, status: '' });
   storeMessage(actor, message);
   scrollToEnd();
 }
 
 const addMessage = (actor: "AI" | "Human", message: string, loading: boolean = true) => {
-  const length = messages.value.push({ actor, message, loading });
+  const status = (loading ? 'loading' : 'done')
+  const length = messages.value.push({ actor, message, status });
   scrollToEnd();
   return messages.value[length - 1];
 };
@@ -186,7 +205,7 @@ const sendRequest = async () => {
 
     if (result?.done) {
       loading.value = false;
-      newMessage.loading = false;
+      newMessage.status = 'done';
       storeMessage('AI', newMessage.message);
 
       newMessage.message.replace(/\!drawImage\(\"(.*)\"\)/, (match, imagePrompt) => {
@@ -208,6 +227,37 @@ const sendRequest = async () => {
     });
   }
 }
+
+const cancelEditMessage = async (index: number) => {
+  messages.value[index].status = 'done';
+}
+
+const updateMessage = async (index: number, event: FocusEvent) => {
+  const target: HTMLTextAreaElement = event.target as HTMLTextAreaElement;
+  const updateMessage = target.value;
+  const oldMessage = messages.value[index];
+
+  if (oldMessage.message === updateMessage) {
+    oldMessage.status = 'done';
+    return;
+  }
+
+  oldMessage.message = updateMessage;
+
+  if (index < messages.value.length - 1) {
+    messages.value.splice(index + 1);
+  }
+
+  storeMessage(oldMessage.actor, updateMessage);
+
+  if (oldMessage.actor === 'Human') {
+    await sendRequest();
+  }
+}
+
+const editMessage = async (index: number) => {
+  messages.value[index].status = 'editing';
+};
 
 const copyToClipboard = async (index: number) => {
   await clipboard.copy(messages.value[index].message);
