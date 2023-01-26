@@ -133,7 +133,15 @@ const signUp = async (data: { email: string; }) => {
 
 // Login method using providers
 const login = async (provider: 'github' | 'google' | 'linkedin') => {
-    const { error } = await client.auth.signInWithOAuth({ provider })
+    const config = useRuntimeConfig();
+    const redirectTo = config.APP_HOST;
+    console.log({ redirectTo });
+
+    const { error } = await client.auth.signInWithOAuth({
+        provider, options: {
+            redirectTo
+        }
+    })
     if (error) {
         return alert('Something went wrong !')
     }

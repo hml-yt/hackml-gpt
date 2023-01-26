@@ -9,6 +9,7 @@ specifiers:
   '@nuxtjs/supabase': ^0.3.0
   '@nuxtjs/tailwindcss': ^6.2.0
   '@tailwindcss/typography': ^0.5.9
+  '@types/uuid': ^9.0.0
   '@vueuse/nuxt': ^9.11.0
   nuxt: ^3.0.0
   nuxt-icon: ^0.2.5
@@ -38,6 +39,7 @@ dependencies:
 devDependencies:
   '@nuxtjs/supabase': 0.3.0
   '@nuxtjs/tailwindcss': 6.2.0
+  '@types/uuid': 9.0.0
   nuxt: 3.0.0
 
 packages:
@@ -1032,6 +1034,10 @@ packages:
   /@types/showdown/2.0.0:
     resolution: {integrity: sha512-70xBJoLv+oXjB5PhtA8vo7erjLDp9/qqI63SRHm4REKrwuPOLs8HhXwlZJBJaB4kC18cCZ1UUZ6Fb/PLFW4TCA==}
     dev: false
+
+  /@types/uuid/9.0.0:
+    resolution: {integrity: sha512-kr90f+ERiQtKWMz5rP32ltJ/BtULDI5RVO0uavn1HQUOwjx0R1h0rnDYNL0CepF1zL5bSY6FISAfd9tOdDhU5Q==}
+    dev: true
 
   /@types/web-bluetooth/0.0.16:
     resolution: {integrity: sha512-oh8q2Zc32S6gd/j50GowEjKLoOVOwHP/bWVjKJInBwQqdOYMdPrf1oVlelTlyfFK3CKxL1uahMDAr+vy8T7yMQ==}
