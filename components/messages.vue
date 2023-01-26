@@ -41,7 +41,7 @@
                                         </SdPicture>
                                     </div>
                                 </div>
-                                <div
+                                <div v-if="index > 0"
                                     class="text-gray-400 flex self-end lg:self-center justify-center gap-4 lg:gap-1 lg:absolute lg:top-0 lg:translate-x-full lg:right-0 lg:mt-0 lg:pl-2 md:invisible md:group-hover:visible">
                                     <button @click="editMessage(index)" :disabled="message.status === 'loading'"
                                         class="p-1 pt-0 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400">
@@ -115,11 +115,11 @@ const copyToClipboard = async (index: number) => {
     }
 };
 
-const storeMessage = async (actor: string, message: string) => {
+const storeMessage = async (actor: string, message: string, index: number) => {
     console.log('Storing message in database', { chatId: chatId.value, user: user.value?.id, actor, message });
 
     if (chatId.value && user.value?.id) {
-        const { error } = await supabase.from('messages').insert([{ 'user_id': user.value?.id, 'chat_id': chatId.value, actor, message }]);
+        const { error } = await supabase.from('messages').insert([{ index, 'user_id': user.value?.id, 'chat_id': chatId.value, actor, message }]);
         console.log({ error });
     } else {
         console.error('No chat id or user id', { chatId: chatId.value, user: user.value?.id });
@@ -129,7 +129,7 @@ const storeMessage = async (actor: string, message: string) => {
 const addSpecialMessage = (actor: 'Picture', message: string) => {
     console.log({ message });
     messages.value.push({ actor, message, status: '' });
-    storeMessage(actor, message);
+    // storeMessage(actor, message);
     scrollToEnd();
 }
 
@@ -158,7 +158,7 @@ const updateMessage = async (index: number, event: FocusEvent | KeyboardEvent) =
         messages.value.splice(index + 1);
     }
 
-    storeMessage(oldMessage.actor, updateMessage);
+    storeMessage(oldMessage.actor, updateMessage, index);
 
     if (oldMessage.actor === 'Human') {
         emit('send-request');
