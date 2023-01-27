@@ -3,6 +3,8 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: "Hacking Modern Life's CloneGPT",
+      viewport:
+        "width=device-width, initial-scale=1, interactive-widget=resizes-content",
     },
   },
   supabase: {},
