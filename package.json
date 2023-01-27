@@ -24,6 +24,7 @@
     "@pinia/nuxt": "^0.4.6",
     "@tailwindcss/typography": "^0.5.9",
     "@vueuse/nuxt": "^9.11.0",
+    "html2canvas": "^1.4.1",
     "nuxt-icon": "^0.2.5",
     "outline": "link:@heroicons/vue/24/outline",
     "pinia": "^2.0.29",

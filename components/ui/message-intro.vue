@@ -3,7 +3,7 @@
         <div class="flex flex-row">
             <h3 class="text-lg font-medium leading-6 text-gray-300 flex grow">Hacking Modern Life GPT
             </h3>
-            <div class="flex bg-indigo-700 rounded text-white text-center p-2" v-if="user">
+            <div class="flex bg-indigo-700 rounded text-white text-center p-2 btn-logout" v-if="user">
                 <UiLogout />
             </div>
         </div>

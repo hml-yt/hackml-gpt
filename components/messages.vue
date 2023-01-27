@@ -33,16 +33,16 @@
                                 v-if="message.status !== 'editing'">
                                 <div class="flex flex-grow flex-col gap-3">
                                     <div
-                                        class="min-h-[20px] flex flex-col items-start gap-4 whitespace-pre-wrap prose prose-gray dark:prose-invert prose-p:m-0 prose-pre:p-0 prose-pre:m-0 prose-li:my-0 prose-li:leading-none prose-ol:my-0">
+                                        class="min-h-[20px] flex flex-col items-start gap-4 whitespace-pre-line prose prose-gray dark:prose-invert prose-p:m-0 prose-pre:p-0 prose-pre:m-0 prose-li:my-0 prose-li:leading-none prose-ol:my-0">
                                         <VueShowdown v-if="message.actor === 'AI' || message.actor === 'Human'"
                                             :markdown="addFullBlock(message.message, message.status === 'loading')"
-                                            :extensions="['highlight']" />
+                                            :extensions="['highlight']" class="whitespace-pre-line" />
                                         <MessagesSdPicture v-if="message.actor === 'Picture'"
                                             :prompt="message.message" />
                                     </div>
                                 </div>
                                 <div v-if="index > 0"
-                                    class="text-gray-400 flex self-end lg:self-center justify-center gap-4 lg:gap-1 lg:absolute lg:top-0 lg:translate-x-full lg:right-0 lg:mt-0 lg:pl-2 md:invisible md:group-hover:visible">
+                                    class="btn-actions text-gray-400 flex self-end lg:self-center justify-center gap-4 lg:gap-1 lg:absolute lg:top-0 lg:translate-x-full lg:right-0 lg:mt-0 lg:pl-2 md:invisible md:group-hover:visible">
                                     <button @click="editMessage(index)" :disabled="message.status === 'loading'"
                                         class="p-1 pt-0 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400">
                                         <Icon name="uil:edit" />
