@@ -209,6 +209,8 @@ defineExpose({
 });
 </script>
 
-<style scoped>
-
+<style>
+pre code.hljs {
+    white-space: pre-line;
+}
 </style>
