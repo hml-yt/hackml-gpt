@@ -1,6 +1,6 @@
 <template>
   <div class="dark">
-    <SignUp v-if="!user" />
+    <WidgetSignUp v-if="!user" />
     <Messages ref="messages" @send-request="sendRequest" />
     <NewMessage ref="messageInput" @new-message="submit" :loading="loading" />
   </div>
