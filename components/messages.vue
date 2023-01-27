@@ -1,6 +1,6 @@
 <template>
     <main
-        class="absolute inset-0 transition-width flex flex-col overflow-hidden items-stretch flex-1 dark:bg-gray-800 pb-20 md:pb-32">
+        class="absolute inset-0 transition-width flex flex-col overflow-hidden items-stretch flex-1 dark:bg-gray-800 pb-24 md:pb-32">
         <div class="flex-1 overflow-hidden">
             <div class="h-full overflow-y-auto">
                 <div class="flex flex-col items-center text-sm h-full chat-messages">
