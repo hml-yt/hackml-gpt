@@ -4,7 +4,7 @@
             <h3 class="text-lg font-medium leading-6 text-gray-300 flex grow">Hacking Modern Life GPT
             </h3>
             <div class="flex bg-indigo-700 rounded text-white text-center p-2" v-if="user">
-                <WidgetLogout />
+                <UiLogout />
             </div>
         </div>
         <p class="mt-2 md:max-w-2xl lg:max-w-2xl xl:max-w-3xl  text-sm text-gray-500">

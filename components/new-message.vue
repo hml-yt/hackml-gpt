@@ -24,35 +24,15 @@
                 </div>
             </div>
         </form>
-        <div class="px-3 pt-2 pb-3 text-center text-xs text-black/50 dark:text-white/50 md:px-4 md:pt-3 md:pb-6">
-            <button
-                class="w-22 text-sm text-gray-700 hover:text-gray-600 dark:hover:text-gray-400 rounded border-2 mx-1 border-gray-500 bg-gray-400 p-1 hover:bg-gray-300">
-                <icon name="uil:picture" size="14px" />
-                Capture
-            </button>
-            <button
-                class="w-22 text-sm text-gray-700 hover:text-gray-600 dark:hover:text-gray-400 rounded border-2 mx-1 border-gray-500 bg-gray-400 p-1 hover:bg-gray-300">
-                <icon name="uil:book-open" size="14px" />
-                Learn
-            </button>
-            |
-            <button
-                class="w-22 text-sm text-gray-700 hover:text-gray-600 dark:hover:text-gray-400 rounded border-2 mx-1 border-gray-500 bg-gray-400 p-1 hover:bg-gray-300">
-                <icon name="uil:microphone" size="14px" />
-                Talk
-            </button>
-            <button
-                class="w-22 text-sm text-gray-700 hover:text-gray-600 dark:hover:text-gray-400 rounded border-2 mx-1 border-gray-500 bg-gray-400 p-1 hover:bg-gray-300">
-                <icon name="uil:paint-tool" size="14px" />
-                Draw
-            </button>
-        </div>
+        <UiMessageToolbar />
     </div>
 </template>
 
 <script setup lang="ts">
 const messageInput = ref<HTMLInputElement | null>(null)
 const message = ref("");
+const settings = useSettingsStore();
+const speech = useSpeechRecognition({});
 
 const emit = defineEmits<{
     (e: 'new-message', message: string): void
@@ -61,6 +41,36 @@ const emit = defineEmits<{
 defineProps<{
     loading?: boolean,
 }>()
+
+watchEffect(() => {
+    if (settings.talk && speech.isSupported.value) {
+        speech.start();
+    } else {
+        speech.stop();
+    }
+});
+
+watch(speech.result, () => {
+    if (speech.result.value) {
+        message.value = speech.result.value;
+    }
+});
+
+watch(speech.isFinal, () => {
+    console.log(speech.isFinal);
+    if (speech.isFinal.value === true) {
+        submit();
+    }
+})
+
+const setListening = (listening: boolean) => {
+    console.log({ listening });
+    if (listening && settings.talk) {
+        speech.start();
+    } else {
+        speech.stop();
+    }
+}
 
 const numOfLines = computed(() => {
     return Math.max(Math.min(4, message.value.split('\n').length), 1);
@@ -77,7 +87,8 @@ const reset = () => {
 }
 
 defineExpose({
-    reset
+    reset,
+    setListening,
 });
 </script>
 

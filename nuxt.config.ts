@@ -13,11 +13,18 @@ export default defineNuxtConfig({
       APP_HOST: process.env.APP_HOST || "https://chat.hackml.cloud",
     },
   },
+  imports: { dirs: ["stores"] },
   modules: [
     "@nuxtjs/tailwindcss",
     "nuxt-icon",
     "@vueuse/nuxt",
     "@nuxtjs/supabase",
     "@formkit/nuxt",
+    [
+      "@pinia/nuxt",
+      {
+        autoImports: ["defineStore", "acceptHMRUpdate"],
+      },
+    ],
   ],
 });

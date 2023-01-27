@@ -4,7 +4,7 @@
         <div class="flex-1 overflow-hidden">
             <div class="h-full overflow-y-auto">
                 <div class="flex flex-col items-center text-sm h-full chat-messages">
-                    <WidgetMessageIntro />
+                    <UiMessageIntro />
                     <div v-for="(message, index) in messages"
                         class="w-full border-b border-black/10 dark:border-gray-900/50 text-gray-800 dark:text-gray-100 group"
                         :class="{ 'dark:bg-gray-800': message.actor === 'Human', 'dark:bg-gray-700': message.actor === 'AI', 'bg-gray-500': message.actor === 'Picture' }">
@@ -37,7 +37,8 @@
                                         <VueShowdown v-if="message.actor === 'AI' || message.actor === 'Human'"
                                             :markdown="addFullBlock(message.message, message.status === 'loading')"
                                             :extensions="['highlight']" />
-                                        <SdPicture v-if="message.actor === 'Picture'" :prompt="message.message" />
+                                        <MessagesSdPicture v-if="message.actor === 'Picture'"
+                                            :prompt="message.message" />
                                     </div>
                                 </div>
                                 <div v-if="index > 0"

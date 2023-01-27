@@ -8,12 +8,14 @@ specifiers:
   '@heroicons/vue': ^2.0.13
   '@nuxtjs/supabase': ^0.3.0
   '@nuxtjs/tailwindcss': ^6.2.0
+  '@pinia/nuxt': ^0.4.6
   '@tailwindcss/typography': ^0.5.9
   '@types/uuid': ^9.0.0
   '@vueuse/nuxt': ^9.11.0
   nuxt: ^3.0.0
   nuxt-icon: ^0.2.5
   outline: link:@heroicons/vue/24/outline
+  pinia: ^2.0.29
   replicate-api: ^0.1.5
   showdown-highlight: ^3.1.0
   tailwind-highlightjs: ^2.0.1
@@ -26,10 +28,12 @@ dependencies:
   '@formkit/themes': 1.0.0-beta.14
   '@headlessui/vue': 1.7.7
   '@heroicons/vue': 2.0.13
+  '@pinia/nuxt': 0.4.6
   '@tailwindcss/typography': 0.5.9
   '@vueuse/nuxt': 9.11.0_nuxt@3.0.0
   nuxt-icon: 0.2.5
   outline: link:@heroicons/vue/24/outline
+  pinia: 2.0.29
   replicate-api: 0.1.5
   showdown-highlight: 3.1.0
   tailwind-highlightjs: 2.0.1
@@ -809,6 +813,19 @@ packages:
       - ts-node
       - webpack
     dev: true
+
+  /@pinia/nuxt/0.4.6:
+    resolution: {integrity: sha512-HjrYEfLdFpmsjhicPJgL36jVhzHWukIQPFFHGTSF84Cplu+f2nY2XHKqe9ToHzE9rLee2RjLOwAzOnXa/I/u6A==}
+    dependencies:
+      '@nuxt/kit': 3.0.0
+      pinia: 2.0.29
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - rollup
+      - supports-color
+      - typescript
+      - vue
+    dev: false
 
   /@rollup/plugin-alias/4.0.2_rollup@2.79.1:
     resolution: {integrity: sha512-1hv7dBOZZwo3SEupxn4UA2N0EDThqSSS+wI1St1TNTBtOZvUchyIClyHcnDcjjrReTPZ47Faedrhblv4n+T5UQ==}
@@ -3993,6 +4010,22 @@ packages:
   /pify/2.3.0:
     resolution: {integrity: sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==}
     engines: {node: '>=0.10.0'}
+
+  /pinia/2.0.29:
+    resolution: {integrity: sha512-5z/KpFecq/cIgfeTnulJXldiLcTITRkTe3N58RKYSj0Pc1EdR6oyCdnf5A9jLoVwBqX5LtHhd0kGlpzWvk9oiQ==}
+    peerDependencies:
+      '@vue/composition-api': ^1.4.0
+      typescript: '>=4.4.4'
+      vue: ^2.6.14 || ^3.2.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      '@vue/devtools-api': 6.4.5
+      vue-demi: 0.13.11
+    dev: false
 
   /pkg-types/0.3.6:
     resolution: {integrity: sha512-uQZutkkh6axl1GxDm5/+8ivVdwuJ5pyDGqJeSiIWIUWIqYiK3p9QKozN/Rv6eVvFoeSWkN1uoYeSDBwwBJBtbg==}
