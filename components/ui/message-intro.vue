@@ -8,12 +8,11 @@
             </div>
         </div>
         <p class="mt-2 md:max-w-2xl lg:max-w-2xl xl:max-w-3xl  text-sm text-gray-500">
-            Hi there, I'm David from "<a class="underline text-indigo-300" target="_blank"
-                href="https://youtube.com/@hml?sub_confirmation=1">Hacking Modern Life</a>", on YouTube,
-            don't forget to subscribe. This is a clone of ChatGPT, without the overload errors. if you
+            Hi there, I'm David, and this is my ChatGPT clone, built with Nuxt3, GPT3 and Stable Diffusion. if you
             have any questions or comments, <a class="underline text-indigo-300" href="https://discord.gg/fyA9tCc7K4"
-                target="_blank">contact me on Discord</a>. And
-            don't forget to smile!
+                target="_blank">contact me on Discord</a>. More info is available on "<a
+                class="underline text-indigo-300" target="_blank"
+                href="https://youtube.com/@hml?sub_confirmation=1">Hacking Modern Life</a>", my YouTube channel. Enjoy!
         </p>
     </div>
 </template>
