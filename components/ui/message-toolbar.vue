@@ -47,9 +47,10 @@ const captureMessages = () => {
         actions.forEach((el) => {
             el.classList.add('hidden');
         });
-        messages.style.width = '960px';
+        messages.style.width = '850px';
         messages.style.height = 'fit-content';
         messages.style.marginInline = 'auto';
+        messages.style.padding = '0';
         messages.style.paddingBottom = '10px';
         messages.classList.add('bg-gray-800');
         (messages.querySelector('.btn-logout') as HTMLElement).style.display = 'none';
@@ -60,6 +61,7 @@ const captureMessages = () => {
         messages.style.removeProperty('width');
         messages.style.removeProperty('height');
         messages.style.removeProperty('margin-inline');
+        messages.style.removeProperty('padding');
         messages.style.removeProperty('padding-bottom');
         hiddens.forEach((el) => {
             el.classList.add('overflow-hidden');
@@ -78,7 +80,7 @@ const captureMessages = () => {
         canvas.toBlob((blob: Blob | MediaSource) => {
             const url = URL.createObjectURL(blob);
             window.open(url, "_blank");
-            restoreElements();
+            // restoreElements();
         });
     });
 };
