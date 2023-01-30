@@ -3,7 +3,7 @@
         <button @click="captureMessages"
             class="w-22 text-sm text-gray-700 hover:text-gray-600 dark:hover:text-gray-400 rounded border-2 mx-1 border-gray-500 bg-gray-400 p-1 hover:bg-gray-300">
             <icon name="uil:picture" size="14px" />
-            Capture
+            Screenshot
         </button>
         <!-- <button
             class="w-22 text-sm text-gray-700 hover:text-gray-600 dark:hover:text-gray-400 rounded border-2 mx-1 border-gray-500 bg-gray-400 p-1 hover:bg-gray-300">
