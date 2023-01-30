@@ -50,6 +50,7 @@ const captureMessages = () => {
         messages.style.width = '960px';
         messages.style.height = 'fit-content';
         messages.style.marginInline = 'auto';
+        messages.style.paddingBottom = '10px';
         messages.classList.add('bg-gray-800');
         (messages.querySelector('.btn-logout') as HTMLElement).style.display = 'none';
     };
@@ -59,6 +60,7 @@ const captureMessages = () => {
         messages.style.removeProperty('width');
         messages.style.removeProperty('height');
         messages.style.removeProperty('margin-inline');
+        messages.style.removeProperty('padding-bottom');
         hiddens.forEach((el) => {
             el.classList.add('overflow-hidden');
         });
