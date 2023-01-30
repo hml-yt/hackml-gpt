@@ -53,6 +53,7 @@ const captureMessages = () => {
         messages.style.padding = '0';
         messages.style.paddingBottom = '10px';
         messages.classList.add('bg-gray-800');
+        messages.classList.add('dark');
         (messages.querySelector('.btn-logout') as HTMLElement).style.display = 'none';
     };
 
@@ -70,6 +71,7 @@ const captureMessages = () => {
             el.classList.remove('hidden');
         });
         messages.classList.remove('bg-gray-800');
+        messages.classList.remove('dark');
         (messages.querySelector('.btn-logout') as HTMLElement).style.display = 'block';
     };
 
@@ -80,7 +82,7 @@ const captureMessages = () => {
         canvas.toBlob((blob: Blob | MediaSource) => {
             const url = URL.createObjectURL(blob);
             window.open(url, "_blank");
-            // restoreElements();
+            restoreElements();
         });
     });
 };
