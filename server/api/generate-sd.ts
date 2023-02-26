@@ -14,12 +14,13 @@ export default defineEventHandler(async (event) => {
   const prompt = getQuery(event).prompt;
 
   predict({
-    model: "prompthero/openjourney", // The model name
+    model: "stability-ai/stable-diffusion", // The model name
+    version: "27b93a2413e7f36cd83da926f3656280b2931564ff050bf9575f1fdf9bcd7478", // The model version
     input: {
-      prompt: `mdjrny-v4 style ${prompt}`,
+      prompt,
       width: 512,
       height: 512,
-      scheduler: "K_EULER",
+      scheduler: "K_EULER_ANCESTRAL",
     }, // The model specific input
     token, // You need a token from replicate.com
   }).then(async (predict) => {
