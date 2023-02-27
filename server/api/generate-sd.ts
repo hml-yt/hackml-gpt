@@ -14,8 +14,8 @@ export default defineEventHandler(async (event) => {
   const prompt = getQuery(event).prompt;
 
   predict({
-    model: "stability-ai/stable-diffusion", // The model name
-    version: "27b93a2413e7f36cd83da926f3656280b2931564ff050bf9575f1fdf9bcd7478", // The model version
+    model: "prompthero/openjourney", // The model name
+    version: "9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb", // The model version
     input: {
       prompt,
       width: 512,
