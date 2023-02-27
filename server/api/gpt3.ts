@@ -6,7 +6,7 @@ export default defineEventHandler((event) => {
   const config = useRuntimeConfig();
   const transform = new LengthTransform(15);
 
-  let prompt = `${promptTemplate}\n\n`;
+  let prompt = `${promptTemplate}\n`;
 
   let messages = [
     {
