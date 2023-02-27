@@ -19,13 +19,15 @@ export abstract class GPTTransform extends Transform {
   _transform(chunk: Buffer, encoding: any, callback: () => void) {
     const slices = chunk.toString().matchAll(/^data: (.*)$/gm);
     for (const slice of slices) {
+      let has_finish_reason = "";
+
       const dataSlice = slice[1];
       if (dataSlice === "[DONE]") {
+        this._pushResponse(this.dataBuffer, has_finish_reason);
         this.push(null);
         return callback();
       }
 
-      let has_finish_reason = "";
       try {
         const { choices } = JSON.parse(dataSlice);
         const { text, finish_reason } = choices.shift();
