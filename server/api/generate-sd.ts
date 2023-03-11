@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
     model: "prompthero/openjourney", // The model name
     version: "9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb", // The model version
     input: {
-      prompt,
+      prompt: `mdjrny-v4 style ${prompt}`,
       width: 512,
       height: 512,
       scheduler: "K_EULER_ANCESTRAL",
